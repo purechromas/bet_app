@@ -11,7 +11,7 @@ def configure_console_and_file_logger(
         file_name: str,
         max_file_size: int = 1024 * 50,  # 50 МБ
 ):
-    # Создаем логгер
+    # Создаем логгер и добавляем левел отладки
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
 
