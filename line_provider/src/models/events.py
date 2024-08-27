@@ -1,17 +1,17 @@
 import uuid
+import enum
 
-from enum import Enum
 from datetime import datetime
 
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import DECIMAL, TIMESTAMP, String, func
+from sqlalchemy import DECIMAL, TIMESTAMP, String, func, Enum
 
 from bet_library.common_utils import generate_uuid
 
 from line_provider.src.models.base import BaseModel
 
 
-class EventStatus(Enum):
+class EventStatus(enum.Enum):
     UNFINISHED = "unfinished"
     TEAM1_WON = "team1_won"
     TEAM2_WON = "team2_won"

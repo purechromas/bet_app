@@ -1,8 +1,8 @@
 import grpc
 
 from line_provider.src.models.events import Event
-from line_provider.src.grpc import grpc_api_pb2 as pb2
-from line_provider.src.grpc import grpc_api_pb2_grpc as pb2_grpc
+import grpc_api_pb2 as pb2
+import grpc_api_pb2_grpc as pb2_grpc
 from line_provider.src.repository.events import EventRepository
 
 

@@ -14,7 +14,7 @@ class EventRepository:
         self._pg_helper = pg_helper
 
     async def get_event_by_id(self, event_id: str) -> Event | None:
-        async with self._pg_helper.get_session() as session:
+        async with await self._pg_helper.get_session() as session:
             query = select(Event).where(Event.id == event_id)
             result = await session.execute(query)
             event = result.scalars().first()
@@ -25,7 +25,7 @@ class EventRepository:
             return event
 
     async def get_event_by_name(self, event_name: str) -> Event | None:
-        async with self._pg_helper.get_session() as session:
+        async with await self._pg_helper.get_session() as session:
             query = select(Event).where(Event.event_name == event_name)
             result = await session.execute(query)
             event = result.scalars().first()

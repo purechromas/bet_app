@@ -1,11 +1,15 @@
-from asyncio import futures
+import asyncio
+from concurrent import futures
 
 import grpc
 
 from bet_library.infrastructure.pg_helper import PGHelper
 
+
 from line_provider.config import CONFIG
 from line_provider.src.models.base import BaseModel
+from grpc_api_pb2_grpc import add_LineProviderServiceServicer_to_server
+
 from line_provider.src.grpc.line_provider_service import EventService
 from line_provider.src.repository.events import EventRepository
 
@@ -22,7 +26,7 @@ async def async_main():
 
     event_repository = EventRepository(pg_helper)
     # Add your service to the server
-    pb2_grpc.add_LineProviderServiceServicer_to_server(
+    add_LineProviderServiceServicer_to_server(
         EventService(event_repository), server)
 
     # Bind the server to a specific address and port
@@ -35,6 +39,8 @@ async def async_main():
     # Keep the server running
     await server.wait_for_termination()
 
+def main():
+    asyncio.run(async_main())
 
-if __name__ == '__main__':
-    asyncio.run(serve())
+if __name__ == "__main__":
+    main()

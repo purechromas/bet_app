@@ -18,7 +18,7 @@ class Config:
     BM_REST_API_PORT = int(os.environ.get("BM_REST_API_PORT", 8000))  # BET MAKER REST API (SERVICE)
 
     # POSTGRES DB
-    PG_URL = str(os.environ.get("POSTGRES_URL", "postgresql://qwe123:qwe123@localhost:5432/postgres"))
+    PG_URL = str(os.environ.get("POSTGRES_URL", "postgresql+asyncpg://qwe123:qwe123@localhost:5432/postgres"))
     PG_POOL_SIZE = int(os.environ.get("PG_POOL_SIZE", 5))
     PG_POOL_TIMEOUT = int(os.environ.get("PG_POOL_TIMEOUT", 60))
 
