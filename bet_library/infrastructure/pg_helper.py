@@ -41,7 +41,8 @@ class PGHelper:
             return session
 
     async def init_db(self, declarative_base: DeclarativeBase):
-        self._declarative_base.metadata.create_all(self._async_engine)
+        async with self._engine.begin() as conn:
+            await conn.run_sync(declarative_base.metadata.create_all)
 
     async def dispose_engine(self):
         await self._engine.dispose()
