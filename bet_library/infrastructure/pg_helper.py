@@ -37,10 +37,9 @@ class PGHelper:
             autocommit=auto_commit,
             expire_on_commit=expire_on_commit,
         )
-        async with session_factory() as session:
-            return session
+        return session_factory()
 
-    async def init_db(self, declarative_base: DeclarativeBase):
+    async def create_tables(self, declarative_base: DeclarativeBase):
         async with self._engine.begin() as conn:
             await conn.run_sync(declarative_base.metadata.create_all)
 

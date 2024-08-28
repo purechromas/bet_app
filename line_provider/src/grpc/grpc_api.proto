@@ -2,32 +2,22 @@ syntax = "proto3";
 
 package event_provider;
 
-import "google/protobuf/empty.proto";
-import "google/protobuf/timestamp.proto";
-
-// Определение статусов события
-enum EventStatus {
-  UNFINISHED = 0;  // Событие еще не завершено
-  TEAM1_WON = 1;   // Событие завершилось победой первой команды
-  TEAM2_WON = 2;   // Событие завершилось победой второй команды
-}
-
 // Сообщение для представления события
 message Event {
   string id = 1;                  // Уникальный идентификатор события
   string event_name = 2;          // Название события
   double odds = 3;                // Коэффициент ставки на выигрыш
-  EventStatus status = 4;         // Статус события
-  google.protobuf.Timestamp finish_at = 5; // Дата и время дедлайна для ставок
-  google.protobuf.Timestamp created_at = 6; // Дата и время создания события
-  google.protobuf.Timestamp updated_at = 7; // Дата и время последнего обновления события
+  string status = 4;              // Статус события
+  string finish_at = 5;           // Дата и время дедлайна для ставок (ISO 8601 string)
+  string created_at = 6;          // Дата и время создания события (ISO 8601 string)
+  string updated_at = 7;          // Дата и время последнего обновления события (ISO 8601 string)
 }
 
 // Запрос для создания нового события
 message CreateEventRequest {
   string event_name = 1;  // Название события
   double odds = 2;        // Коэффициент ставки на выигрыш
-  google.protobuf.Timestamp finish_at = 3;   // Дата и время дедлайна для ставок
+  string finish_at = 3;   // Дата и время дедлайна для ставок (ISO 8601 string)
 }
 
 // Ответ о создании нового события
@@ -62,13 +52,18 @@ message GetListEventsResponse {
 // Запрос для изменения статуса события
 message UpdateEventStatusRequest {
   string id = 1;          // Идентификатор события
-  EventStatus status = 2; // Новый статус события
+  string status = 2;     // Новый статус события (ISO 8601 string)
+}
+
+message UpdateEventStatusResponse {
+  Event event = 1;
 }
 
 // Line Provider gRPC сервис
 service LineProviderService {
   rpc CreateEvent(CreateEventRequest) returns (CreateEventResponse);
   rpc GetEvent(GetEventRequest) returns (GetEventResponse);
-  rpc ListEvents(GetListEventsRequest) returns (GetListEventsResponse);
-  rpc UpdateEventStatus(UpdateEventStatusRequest) returns (google.protobuf.Empty);
+  rpc GetListEvents(GetListEventsRequest) returns (GetListEventsResponse);
+  rpc UpdateEventStatus(UpdateEventStatusRequest) returns (UpdateEventStatusResponse);
 }
+
