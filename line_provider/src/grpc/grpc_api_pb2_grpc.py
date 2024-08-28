@@ -3,8 +3,7 @@
 import grpc
 import warnings
 
-from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
-import grpc_api_pb2 as grpc__api__pb2
+from line_provider.src.grpc import grpc_api_pb2 as line__provider_dot_src_dot_grpc_dot_grpc__api__pb2
 
 GRPC_GENERATED_VERSION = '1.66.0'
 GRPC_VERSION = grpc.__version__
@@ -19,7 +18,7 @@ except ImportError:
 if _version_not_supported:
     raise RuntimeError(
         f'The grpc package installed is at version {GRPC_VERSION},'
-        + f' but the generated code in grpc_api_pb2_grpc.py depends on'
+        + f' but the generated code in line_provider/src/grpc/grpc_api_pb2_grpc.py depends on'
         + f' grpcio>={GRPC_GENERATED_VERSION}.'
         + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
         + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
@@ -38,23 +37,23 @@ class LineProviderServiceStub(object):
         """
         self.CreateEvent = channel.unary_unary(
                 '/event_provider.LineProviderService/CreateEvent',
-                request_serializer=grpc__api__pb2.CreateEventRequest.SerializeToString,
-                response_deserializer=grpc__api__pb2.CreateEventResponse.FromString,
+                request_serializer=line__provider_dot_src_dot_grpc_dot_grpc__api__pb2.CreateEventRequest.SerializeToString,
+                response_deserializer=line__provider_dot_src_dot_grpc_dot_grpc__api__pb2.CreateEventResponse.FromString,
                 _registered_method=True)
         self.GetEvent = channel.unary_unary(
                 '/event_provider.LineProviderService/GetEvent',
-                request_serializer=grpc__api__pb2.GetEventRequest.SerializeToString,
-                response_deserializer=grpc__api__pb2.GetEventResponse.FromString,
+                request_serializer=line__provider_dot_src_dot_grpc_dot_grpc__api__pb2.GetEventRequest.SerializeToString,
+                response_deserializer=line__provider_dot_src_dot_grpc_dot_grpc__api__pb2.GetEventResponse.FromString,
                 _registered_method=True)
-        self.ListEvents = channel.unary_unary(
-                '/event_provider.LineProviderService/ListEvents',
-                request_serializer=grpc__api__pb2.GetListEventsRequest.SerializeToString,
-                response_deserializer=grpc__api__pb2.GetListEventsResponse.FromString,
+        self.GetListEvents = channel.unary_unary(
+                '/event_provider.LineProviderService/GetListEvents',
+                request_serializer=line__provider_dot_src_dot_grpc_dot_grpc__api__pb2.GetListEventsRequest.SerializeToString,
+                response_deserializer=line__provider_dot_src_dot_grpc_dot_grpc__api__pb2.GetListEventsResponse.FromString,
                 _registered_method=True)
         self.UpdateEventStatus = channel.unary_unary(
                 '/event_provider.LineProviderService/UpdateEventStatus',
-                request_serializer=grpc__api__pb2.UpdateEventStatusRequest.SerializeToString,
-                response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+                request_serializer=line__provider_dot_src_dot_grpc_dot_grpc__api__pb2.UpdateEventStatusRequest.SerializeToString,
+                response_deserializer=line__provider_dot_src_dot_grpc_dot_grpc__api__pb2.UpdateEventStatusResponse.FromString,
                 _registered_method=True)
 
 
@@ -74,7 +73,7 @@ class LineProviderServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def ListEvents(self, request, context):
+    def GetListEvents(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -91,23 +90,23 @@ def add_LineProviderServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'CreateEvent': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateEvent,
-                    request_deserializer=grpc__api__pb2.CreateEventRequest.FromString,
-                    response_serializer=grpc__api__pb2.CreateEventResponse.SerializeToString,
+                    request_deserializer=line__provider_dot_src_dot_grpc_dot_grpc__api__pb2.CreateEventRequest.FromString,
+                    response_serializer=line__provider_dot_src_dot_grpc_dot_grpc__api__pb2.CreateEventResponse.SerializeToString,
             ),
             'GetEvent': grpc.unary_unary_rpc_method_handler(
                     servicer.GetEvent,
-                    request_deserializer=grpc__api__pb2.GetEventRequest.FromString,
-                    response_serializer=grpc__api__pb2.GetEventResponse.SerializeToString,
+                    request_deserializer=line__provider_dot_src_dot_grpc_dot_grpc__api__pb2.GetEventRequest.FromString,
+                    response_serializer=line__provider_dot_src_dot_grpc_dot_grpc__api__pb2.GetEventResponse.SerializeToString,
             ),
-            'ListEvents': grpc.unary_unary_rpc_method_handler(
-                    servicer.ListEvents,
-                    request_deserializer=grpc__api__pb2.GetListEventsRequest.FromString,
-                    response_serializer=grpc__api__pb2.GetListEventsResponse.SerializeToString,
+            'GetListEvents': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetListEvents,
+                    request_deserializer=line__provider_dot_src_dot_grpc_dot_grpc__api__pb2.GetListEventsRequest.FromString,
+                    response_serializer=line__provider_dot_src_dot_grpc_dot_grpc__api__pb2.GetListEventsResponse.SerializeToString,
             ),
             'UpdateEventStatus': grpc.unary_unary_rpc_method_handler(
                     servicer.UpdateEventStatus,
-                    request_deserializer=grpc__api__pb2.UpdateEventStatusRequest.FromString,
-                    response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+                    request_deserializer=line__provider_dot_src_dot_grpc_dot_grpc__api__pb2.UpdateEventStatusRequest.FromString,
+                    response_serializer=line__provider_dot_src_dot_grpc_dot_grpc__api__pb2.UpdateEventStatusResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -136,8 +135,8 @@ class LineProviderService(object):
             request,
             target,
             '/event_provider.LineProviderService/CreateEvent',
-            grpc__api__pb2.CreateEventRequest.SerializeToString,
-            grpc__api__pb2.CreateEventResponse.FromString,
+            line__provider_dot_src_dot_grpc_dot_grpc__api__pb2.CreateEventRequest.SerializeToString,
+            line__provider_dot_src_dot_grpc_dot_grpc__api__pb2.CreateEventResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -163,8 +162,8 @@ class LineProviderService(object):
             request,
             target,
             '/event_provider.LineProviderService/GetEvent',
-            grpc__api__pb2.GetEventRequest.SerializeToString,
-            grpc__api__pb2.GetEventResponse.FromString,
+            line__provider_dot_src_dot_grpc_dot_grpc__api__pb2.GetEventRequest.SerializeToString,
+            line__provider_dot_src_dot_grpc_dot_grpc__api__pb2.GetEventResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -176,7 +175,7 @@ class LineProviderService(object):
             _registered_method=True)
 
     @staticmethod
-    def ListEvents(request,
+    def GetListEvents(request,
             target,
             options=(),
             channel_credentials=None,
@@ -189,9 +188,9 @@ class LineProviderService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/event_provider.LineProviderService/ListEvents',
-            grpc__api__pb2.GetListEventsRequest.SerializeToString,
-            grpc__api__pb2.GetListEventsResponse.FromString,
+            '/event_provider.LineProviderService/GetListEvents',
+            line__provider_dot_src_dot_grpc_dot_grpc__api__pb2.GetListEventsRequest.SerializeToString,
+            line__provider_dot_src_dot_grpc_dot_grpc__api__pb2.GetListEventsResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -217,8 +216,8 @@ class LineProviderService(object):
             request,
             target,
             '/event_provider.LineProviderService/UpdateEventStatus',
-            grpc__api__pb2.UpdateEventStatusRequest.SerializeToString,
-            google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+            line__provider_dot_src_dot_grpc_dot_grpc__api__pb2.UpdateEventStatusRequest.SerializeToString,
+            line__provider_dot_src_dot_grpc_dot_grpc__api__pb2.UpdateEventStatusResponse.FromString,
             options,
             channel_credentials,
             insecure,
