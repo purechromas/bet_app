@@ -3,7 +3,7 @@ from sqlalchemy.orm import DeclarativeBase, declared_attr
 from bet_library.common_utils import camel_case_2_snake_case
 
 
-class BaseModelBetMakerDB(DeclarativeBase):
+class BaseModel(DeclarativeBase):
     @classmethod
     @declared_attr
     def __tablename__(cls):

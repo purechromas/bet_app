@@ -1,9 +1,10 @@
 from datetime import timedelta
+from typing import Sequence
 
 from sqlalchemy import select, update
 
 from bet_library.common_errors import NotFoundError
-from bet_library.common_utils import get_moscow_time_now_isodate
+from bet_library.common_utils import get_utc_time_now_isodate
 from bet_library.infrastructure.pg_helper import PGHelper
 
 from line_provider.src.models.events import Event
@@ -49,21 +50,16 @@ class EventRepository:
         Понятно, что для этого нужно разработать определенное решение и обратиться к
         продукт-менеджеру для уточнения требований.
         """
+        unfinished_events_time = get_utc_time_now_isodate() - timedelta(minutes=1)
+
         async with await self._pg_helper.get_session() as session:
-            result = await session.execute(select(Event).where(
-                Event.finish_at > get_moscow_time_now_isodate() - timedelta(minutes=1))
-            )
+            result = await session.execute(select(Event).where(Event.finish_at > unfinished_events_time))
             events = result.scalars().all()
-            return events
+            return list(events)
 
     async def update_event_status(self, event_id: str, status: str) -> Event:
         async with await self._pg_helper.get_session() as session:
-            update_query = (
-                update(Event)
-                .where(Event.id == event_id)
-                .values(status=status)
-                .returning(Event)
-            )
+            update_query = update(Event).where(Event.id == event_id).values(status=status).returning(Event)
             result = await session.execute(update_query)
             event = result.scalars().one_or_none()
 

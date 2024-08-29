@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+  postgres:
+    container_name: postgres15
+    image: postgres:15
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-qwe123}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-qwe123}
+      POSTGRES_DB: ${POSTGRES_DB:-postgres}
+    volumes:
+      - ./create_dbs.sql:/docker-entrypoint-initdb.d/create_dbs.sql
+    ports:
+      - "5432:5432"
+    restart: always
+
+  redis:
+    container_name: redis6
+    image: redis:6
+    ports:
+      - "6379:6379"
+    environment:
+      REDIS_MAXMEMORY: ${REDIS_MAXMEMORY:-2GB}
+    restart: always
+
+  rabbit:
+    container_name: rabbitmq
+    image: rabbitmq:3-management
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER:-admin}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS:-admin}
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    restart: always

@@ -1,5 +1,9 @@
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker, AsyncEngine
+import logging
+
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from sqlalchemy.orm import DeclarativeBase
+
+log = logging.getLogger(__name__)
 
 
 class PGHelper:
@@ -12,11 +16,11 @@ class PGHelper:
     """
 
     def __init__(
-            self,
-            url: str,  # URL для подключения к базе данных Postgres.
-            echo: bool = False,  # Включение вывода SQL-запросов в лог.
-            pool_size: int = 10,  # Максимальное количество подключений в пуле.
-            pool_timeout: int = 60,  # Тайм-аут ожидания подключения из пула в секундах.
+        self,
+        url: str,  # URL для подключения к базе данных Postgres.
+        echo: bool = False,  # Включение вывода SQL-запросов в лог.
+        pool_size: int = 10,  # Максимальное количество подключений в пуле.
+        pool_timeout: int = 60,  # Тайм-аут ожидания подключения из пула в секундах.
     ):
         self._engine = create_async_engine(
             url=url,
@@ -26,10 +30,10 @@ class PGHelper:
         )
 
     async def get_session(
-            self,
-            auto_flush: bool = False,  # Автоматически сбрасывать изменения перед выполнением запросов.
-            auto_commit: bool = False,  # Автоматически фиксировать изменения в базе данных.
-            expire_on_commit: bool = False  # Истекать объекты после коммита.
+        self,
+        auto_flush: bool = False,  # Автоматически сбрасывать изменения перед выполнением запросов.
+        auto_commit: bool = False,  # Автоматически фиксировать изменения в базе данных.
+        expire_on_commit: bool = False,  # Истекать объекты после коммита.
     ) -> AsyncSession:
         session_factory = async_sessionmaker(
             bind=self._engine,
@@ -41,7 +45,11 @@ class PGHelper:
 
     async def create_tables(self, declarative_base: DeclarativeBase):
         async with self._engine.begin() as conn:
-            await conn.run_sync(declarative_base.metadata.create_all)
+            try:
+                await conn.run_sync(declarative_base.metadata.create_all)
+            except Exception as e:
+                log.exception(f"Error creating tables: {e}")
+                raise
 
     async def dispose_engine(self):
         await self._engine.dispose()

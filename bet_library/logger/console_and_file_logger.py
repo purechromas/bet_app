@@ -5,11 +5,11 @@ from logging import handlers
 
 
 def configure_console_and_file_logger(
-        console_log_level: str,
-        file_log_level: str,
-        path_name: str,
-        file_name: str,
-        max_file_size: int = 1024 * 50,  # 50 МБ
+    console_log_level: str,
+    file_log_level: str,
+    path_name: str,
+    file_name: str,
+    max_file_size: int = 1024 * 50,  # 50 МБ
 ):
     # Создаем логгер и добавляем левел отладки
     logger = logging.getLogger()
@@ -25,10 +25,7 @@ def configure_console_and_file_logger(
 
     # Создаем обработчик для файлов
     file_path = os.path.join(log_dir, file_name)
-    file_handler = handlers.RotatingFileHandler(
-        filename=file_path,
-        maxBytes=max_file_size
-    )
+    file_handler = handlers.RotatingFileHandler(filename=file_path, maxBytes=max_file_size)
     file_handler.setLevel(file_log_level)  # Устанавливаем уровень для файлов
 
     # Создаем форматтер и добавляем его к обработчикам

@@ -10,10 +10,10 @@ class RedisHelper:
     """
 
     def __init__(
-            self,
-            redis_url: str,  # URL для подключения к Redis серверу
-            redis_pool: int = 5,  # Максимальное количество подключений в пуле
-            redis_pool_timeout: int | None = None  # Тайм-аут ожидания подключения из пула в секундах
+        self,
+        redis_url: str,  # URL для подключения к Redis серверу
+        redis_pool: int = 5,  # Максимальное количество подключений в пуле
+        redis_pool_timeout: int | None = None,  # Тайм-аут ожидания подключения из пула в секундах
     ):
         self._redis = Redis.from_url(
             redis_url,

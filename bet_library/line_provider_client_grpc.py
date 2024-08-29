@@ -13,7 +13,7 @@ class EventStatus(Enum):
     TEAM_2_WINNER = "team_2_winner"
 
 
-class LineProviderClient:
+class LineProviderClientGRPC:
     def __init__(self, channel: grpc.aio.Channel, stub: pb2_grpc.LineProviderServiceStub):
         self._channel = channel
         self._stub = stub
@@ -26,12 +26,8 @@ class LineProviderClient:
         request = pb2.GetEventRequest(event_name=event_name)
         return await self._stub.GetEvent(request)
 
-    async def create_event(self, event_name: str, odds: float, finish_at: datetime) -> pb2.CreateEventResponse:
-        request = pb2.CreateEventRequest(
-            event_name=event_name,
-            odds=odds,
-            finish_at=finish_at.isoformat()
-        )
+    async def create_event(self, event_name: str, odds: float, finish_at: str) -> pb2.CreateEventResponse:
+        request = pb2.CreateEventRequest(event_name=event_name, odds=odds, finish_at=finish_at)
         return await self._stub.CreateEvent(request)
 
     async def get_list_events(self) -> pb2.GetListEventsResponse:
@@ -39,8 +35,5 @@ class LineProviderClient:
         return await self._stub.GetListEvents(request)
 
     async def update_event_status(self, event_id: str, status: EventStatus) -> pb2.UpdateEventStatusResponse:
-        request = pb2.UpdateEventStatusRequest(
-            id=event_id,
-            status=status.value
-        )
+        request = pb2.UpdateEventStatusRequest(id=event_id, status=status.value)
         return await self._stub.UpdateEventStatus(request)

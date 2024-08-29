@@ -52,12 +52,11 @@ class EventService(pb2_grpc.LineProviderServiceServicer):
             created_at=event.created_at.isoformat(),
             updated_at=event.updated_at.isoformat(),
         )
-        return pb2.GetEventResponse(
-            event=event_response
-        )
+        return pb2.GetEventResponse(event=event_response)
 
-    async def CreateEvent(self, request: pb2.CreateEventRequest,
-                          context: grpc.ServicerContext) -> pb2.CreateEventResponse:
+    async def CreateEvent(
+        self, request: pb2.CreateEventRequest, context: grpc.ServicerContext
+    ) -> pb2.CreateEventResponse:
         event = Event(
             event_name=request.event_name,
             odds=request.odds,
@@ -75,33 +74,32 @@ class EventService(pb2_grpc.LineProviderServiceServicer):
             created_at=event.created_at.isoformat(),
             updated_at=event.updated_at.isoformat(),
         )
-        return pb2.CreateEventResponse(
-            event=response_event
-        )
+        return pb2.CreateEventResponse(event=response_event)
 
-    async def GetListEvents(self, request: pb2.GetListEventsRequest, context: grpc.ServicerContext) -> pb2.GetListEventsResponse:
+    async def GetListEvents(
+        self, request: pb2.GetListEventsRequest, context: grpc.ServicerContext
+    ) -> pb2.GetListEventsResponse:
         events: list[Event] = await self._event_repository.get_unfinished_events()
 
-        response_events = [pb2.Event(
-            id=event.id,
-            event_name=event.event_name,
-            odds=event.odds,
-            status=event.status,
-            finish_at=event.finish_at.isoformat(),
-            created_at=event.created_at.isoformat(),
-            updated_at=event.updated_at.isoformat(),
-        ) for event in events]
+        response_events = [
+            pb2.Event(
+                id=event.id,
+                event_name=event.event_name,
+                odds=event.odds,
+                status=event.status,
+                finish_at=event.finish_at.isoformat(),
+                created_at=event.created_at.isoformat(),
+                updated_at=event.updated_at.isoformat(),
+            )
+            for event in events
+        ]
 
-        if not response_events:
-            context.set_code(grpc.StatusCode.NOT_FOUND)
-            context.set_details("Unfinished events not found")
-            return pb2.google_dot_protobuf_dot_empty__pb2()
+        context.set_code(grpc.StatusCode.OK)
+        return pb2.GetListEventsResponse(events=response_events)
 
-        return pb2.GetListEventsResponse(
-            events=response_events
-        )
-
-    async def UpdateEventStatus(self, request: pb2.UpdateEventStatusRequest, context: grpc.ServicerContext) -> pb2.UpdateEventStatusResponse:
+    async def UpdateEventStatus(
+        self, request: pb2.UpdateEventStatusRequest, context: grpc.ServicerContext
+    ) -> pb2.UpdateEventStatusResponse:
         event_id: str = request.id
         status: str = request.status
 
@@ -122,6 +120,4 @@ class EventService(pb2_grpc.LineProviderServiceServicer):
             created_at=event.created_at.isoformat(),
             updated_at=event.updated_at.isoformat(),
         )
-        return pb2.UpdateEventStatusResponse(
-            event=response_event
-        )
+        return pb2.UpdateEventStatusResponse(event=response_event)
