@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  line_provider:
+    container_name: line_provider_grpc_server
+    environment:
+      PG_URL: postgresql+asyncpg://qwe123:qwe123@postgres:5432/line_provider
+      AMQP_URL: amqp://admin:admin@rabbit:5672/
+      REDIS_URL: redis://redis:6379/0
+      APP_GRPC_HOST: "0.0.0.0"
+    build: .
+    ports:
+      - "50051:50051"
+    command:
+      - line-provider
+
+  bet_maker:
+    container_name: bet_maker_rest_api
+    environment:
+      PG_URL: postgresql+asyncpg://qwe123:qwe123@postgres:5432/bet_maker
+      AMQP_URL: amqp://admin:admin@rabbit:5672/
+      REDIS_URL: redis://redis:6379/0
+      APP_HOST: "0.0.0.0"
+      LINE_PROVIDER_GRPC_SERVER_URL: "line_provider_grpc_server:50051"
+    build: .
+    ports:
+      - "8001:8001"
+    command:
+      - bet-maker

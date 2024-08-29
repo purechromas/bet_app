@@ -1,0 +1,238 @@
+2024-08-29 18:06:10,793 | ERROR | Unexpected [DBAPIError] raised by servicer method [/event_provider.LineProviderService/CreateEvent]
+Traceback (most recent call last):
+  File "asyncpg/protocol/prepared_stmt.pyx", line 175, in asyncpg.protocol.protocol.PreparedStatementState._encode_bind_msg
+  File "asyncpg/protocol/codecs/base.pyx", line 227, in asyncpg.protocol.protocol.Codec.encode
+  File "asyncpg/protocol/codecs/base.pyx", line 129, in asyncpg.protocol.protocol.Codec.encode_scalar
+  File "asyncpg/pgproto/./codecs/datetime.pyx", line 152, in asyncpg.pgproto.pgproto.timestamp_encode
+TypeError: can't subtract offset-naive and offset-aware datetimes
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py", line 538, in _prepare_and_execute
+    self._rows = deque(await prepared_stmt.fetch(*parameters))
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/asyncpg/prepared_stmt.py", line 176, in fetch
+    data = await self.__bind_execute(args, 0, timeout)
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/asyncpg/prepared_stmt.py", line 241, in __bind_execute
+    data, status, _ = await self.__do_execute(
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/asyncpg/prepared_stmt.py", line 230, in __do_execute
+    return await executor(protocol)
+  File "asyncpg/protocol/protocol.pyx", line 186, in bind_execute
+  File "asyncpg/protocol/prepared_stmt.pyx", line 204, in asyncpg.protocol.protocol.PreparedStatementState._encode_bind_msg
+asyncpg.exceptions.DataError: invalid input for query argument $5: datetime.datetime(2024, 8, 29, 13, 43, 3... (can't subtract offset-naive and offset-aware datetimes)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/engine/default.py", line 941, in do_execute
+    cursor.execute(statement, parameters)
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py", line 572, in execute
+    self._adapt_connection.await_(
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py", line 550, in _prepare_and_execute
+    self._handle_exception(error)
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py", line 501, in _handle_exception
+    self._adapt_connection._handle_exception(error)
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py", line 784, in _handle_exception
+    raise translated_error from error
+sqlalchemy.dialects.postgresql.asyncpg.AsyncAdapt_asyncpg_dbapi.Error: <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $5: datetime.datetime(2024, 8, 29, 13, 43, 3... (can't subtract offset-naive and offset-aware datetimes)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "src/python/grpcio/grpc/_cython/_cygrpc/aio/server.pyx.pxi", line 689, in grpc._cython.cygrpc._handle_exceptions
+  File "src/python/grpcio/grpc/_cython/_cygrpc/aio/server.pyx.pxi", line 831, in _handle_rpc
+  File "src/python/grpcio/grpc/_cython/_cygrpc/aio/server.pyx.pxi", line 554, in _handle_unary_unary_rpc
+  File "src/python/grpcio/grpc/_cython/_cygrpc/aio/server.pyx.pxi", line 408, in _finish_handler_with_unary_response
+  File "/home/nedkov/PycharmProjects/bet_app/line_provider/src/grpc/grpc_line_provider_service.py", line 66, in CreateEvent
+    event = await self._event_repository.create_event(event)
+  File "/home/nedkov/PycharmProjects/bet_app/line_provider/src/repository/events.py", line 42, in create_event
+    await session.commit()
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/ext/asyncio/session.py", line 1009, in commit
+    await greenlet_spawn(self.sync_session.commit)
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py", line 203, in greenlet_spawn
+    result = context.switch(value)
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py", line 2028, in commit
+    trans.commit(_to_root=True)
+  File "<string>", line 2, in commit
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/orm/state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py", line 1313, in commit
+    self._prepare_impl()
+  File "<string>", line 2, in _prepare_impl
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/orm/state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py", line 1288, in _prepare_impl
+    self.session.flush()
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py", line 4352, in flush
+    self._flush(objects)
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py", line 4487, in _flush
+    with util.safe_reraise():
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py", line 4448, in _flush
+    flush_context.execute()
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/orm/unitofwork.py", line 466, in execute
+    rec.execute(self)
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/orm/unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py", line 93, in save_obj
+    _emit_insert_statements(
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py", line 1233, in _emit_insert_statements
+    result = connection.execute(
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1418, in execute
+    return meth(
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/sql/elements.py", line 515, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1640, in _execute_clauseelement
+    ret = self._execute_context(
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 2355, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/engine/default.py", line 941, in do_execute
+    cursor.execute(statement, parameters)
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py", line 572, in execute
+    self._adapt_connection.await_(
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py", line 550, in _prepare_and_execute
+    self._handle_exception(error)
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py", line 501, in _handle_exception
+    self._adapt_connection._handle_exception(error)
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py", line 784, in _handle_exception
+    raise translated_error from error
+sqlalchemy.exc.DBAPIError: (sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $5: datetime.datetime(2024, 8, 29, 13, 43, 3... (can't subtract offset-naive and offset-aware datetimes)
+[SQL: INSERT INTO event (id, event_name, odds, status, finish_at) VALUES ($1::VARCHAR, $2::VARCHAR, $3::NUMERIC(10, 2), $4::VARCHAR, $5::TIMESTAMP WITHOUT TIME ZONE) RETURNING event.created_at, event.updated_at]
+[parameters: ('f04d5173-5ba4-433b-81c2-54e137ca0a2a', 'Amazing Event', 1.5, 'unfinished', datetime.datetime(2024, 8, 29, 13, 43, 30, 313000, tzinfo=datetime.timezone.utc))]
+(Background on this error at: https://sqlalche.me/e/20/dbapi)
+2024-08-29 18:09:00,542 | ERROR | Unexpected [DBAPIError] raised by servicer method [/event_provider.LineProviderService/CreateEvent]
+Traceback (most recent call last):
+  File "asyncpg/protocol/prepared_stmt.pyx", line 175, in asyncpg.protocol.protocol.PreparedStatementState._encode_bind_msg
+  File "asyncpg/protocol/codecs/base.pyx", line 227, in asyncpg.protocol.protocol.Codec.encode
+  File "asyncpg/protocol/codecs/base.pyx", line 129, in asyncpg.protocol.protocol.Codec.encode_scalar
+  File "asyncpg/pgproto/./codecs/datetime.pyx", line 152, in asyncpg.pgproto.pgproto.timestamp_encode
+TypeError: can't subtract offset-naive and offset-aware datetimes
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py", line 538, in _prepare_and_execute
+    self._rows = deque(await prepared_stmt.fetch(*parameters))
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/asyncpg/prepared_stmt.py", line 176, in fetch
+    data = await self.__bind_execute(args, 0, timeout)
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/asyncpg/prepared_stmt.py", line 241, in __bind_execute
+    data, status, _ = await self.__do_execute(
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/asyncpg/prepared_stmt.py", line 230, in __do_execute
+    return await executor(protocol)
+  File "asyncpg/protocol/protocol.pyx", line 186, in bind_execute
+  File "asyncpg/protocol/prepared_stmt.pyx", line 204, in asyncpg.protocol.protocol.PreparedStatementState._encode_bind_msg
+asyncpg.exceptions.DataError: invalid input for query argument $5: datetime.datetime(2024, 8, 29, 13, 43, 3... (can't subtract offset-naive and offset-aware datetimes)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/engine/default.py", line 941, in do_execute
+    cursor.execute(statement, parameters)
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py", line 572, in execute
+    self._adapt_connection.await_(
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py", line 550, in _prepare_and_execute
+    self._handle_exception(error)
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py", line 501, in _handle_exception
+    self._adapt_connection._handle_exception(error)
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py", line 784, in _handle_exception
+    raise translated_error from error
+sqlalchemy.dialects.postgresql.asyncpg.AsyncAdapt_asyncpg_dbapi.Error: <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $5: datetime.datetime(2024, 8, 29, 13, 43, 3... (can't subtract offset-naive and offset-aware datetimes)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "src/python/grpcio/grpc/_cython/_cygrpc/aio/server.pyx.pxi", line 689, in grpc._cython.cygrpc._handle_exceptions
+  File "src/python/grpcio/grpc/_cython/_cygrpc/aio/server.pyx.pxi", line 831, in _handle_rpc
+  File "src/python/grpcio/grpc/_cython/_cygrpc/aio/server.pyx.pxi", line 554, in _handle_unary_unary_rpc
+  File "src/python/grpcio/grpc/_cython/_cygrpc/aio/server.pyx.pxi", line 408, in _finish_handler_with_unary_response
+  File "/home/nedkov/PycharmProjects/bet_app/line_provider/src/grpc/grpc_line_provider_service.py", line 66, in CreateEvent
+    event = await self._event_repository.create_event(event)
+  File "/home/nedkov/PycharmProjects/bet_app/line_provider/src/repository/events.py", line 42, in create_event
+    await session.commit()
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/ext/asyncio/session.py", line 1009, in commit
+    await greenlet_spawn(self.sync_session.commit)
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py", line 203, in greenlet_spawn
+    result = context.switch(value)
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py", line 2028, in commit
+    trans.commit(_to_root=True)
+  File "<string>", line 2, in commit
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/orm/state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py", line 1313, in commit
+    self._prepare_impl()
+  File "<string>", line 2, in _prepare_impl
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/orm/state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py", line 1288, in _prepare_impl
+    self.session.flush()
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py", line 4352, in flush
+    self._flush(objects)
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py", line 4487, in _flush
+    with util.safe_reraise():
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py", line 4448, in _flush
+    flush_context.execute()
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/orm/unitofwork.py", line 466, in execute
+    rec.execute(self)
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/orm/unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py", line 93, in save_obj
+    _emit_insert_statements(
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py", line 1233, in _emit_insert_statements
+    result = connection.execute(
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1418, in execute
+    return meth(
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/sql/elements.py", line 515, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1640, in _execute_clauseelement
+    ret = self._execute_context(
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 2355, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/engine/default.py", line 941, in do_execute
+    cursor.execute(statement, parameters)
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py", line 572, in execute
+    self._adapt_connection.await_(
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py", line 550, in _prepare_and_execute
+    self._handle_exception(error)
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py", line 501, in _handle_exception
+    self._adapt_connection._handle_exception(error)
+  File "/home/nedkov/PycharmProjects/bet_app/.venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py", line 784, in _handle_exception
+    raise translated_error from error
+sqlalchemy.exc.DBAPIError: (sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $5: datetime.datetime(2024, 8, 29, 13, 43, 3... (can't subtract offset-naive and offset-aware datetimes)
+[SQL: INSERT INTO event (id, event_name, odds, status, finish_at) VALUES ($1::VARCHAR, $2::VARCHAR, $3::NUMERIC(10, 2), $4::VARCHAR, $5::TIMESTAMP WITHOUT TIME ZONE) RETURNING event.created_at, event.updated_at]
+[parameters: ('09872f06-8f21-459f-8ec2-f15de5358386', 'Amazing Event', 1.5, 'unfinished', datetime.datetime(2024, 8, 29, 13, 43, 30, 313000, tzinfo=datetime.timezone.utc))]
+(Background on this error at: https://sqlalche.me/e/20/dbapi)
